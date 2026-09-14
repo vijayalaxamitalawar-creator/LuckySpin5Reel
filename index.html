@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 LuckySpin5Reel - 150 Games</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .screen {
+            display: none;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* LOGIN SCREEN */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* MAIN MENU */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .menu-btn {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* GAME SCREEN */
+        .game-display {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .game-title {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .reels-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .reel {
+            width: 60px;
+            height: 80px;
+            background: white;
+            border: 3px solid gold;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+        }
+
+        .reel.spin {
+            animation: spinReel 0.5s ease-out;
+        }
+
+        @keyframes spinReel {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .bet-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .bet-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .bet-btn:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .bet-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .spin-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .win-display {
+            background: #fff9e6;
+            border: 3px solid gold;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .win-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .win-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f5576c;
+        }
+
+        .free-spins-display {
+            background: #e3f2fd;
+            border: 2px solid #2196F3;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .free-spins-display.active {
+            display: block;
+        }
+
+        /* GAMES LIST */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .game-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .game-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* POPUP */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            animation: popupShow 0.3s ease-out;
+        }
+
+        @keyframes popupShow {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-amount {
+            font-size: 32px;
+            color: #f5576c;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ADMIN PANEL */
+        .admin-search {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .player-result {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .player-result.active {
+            display: block;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .result-value {
+            color: #667eea;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .reels-container {
+                gap: 5px;
+                padding: 10px;
+            }
+
+            .reel {
+                width: 50px;
+                height: 70px;
+                font-size: 28px;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #999;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🎰 LuckySpin5Reel</h1>
+            <div class="player-info">
+                <div class="info-item">
+                    <div class="info-label">Player ID</div>
+                    <div class="info-value" id="playerId">--</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">💰 Balance</div>
+                    <div class="info-value" id="coinBalance">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREENS -->
+        
+        <!-- LOGIN SCREEN -->
+        <div class="screen active" id="loginScreen">
+            <h2>Login / Register</h2>
+            <div class="login-form">
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="phoneInput" placeholder="Enter mobile number" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="passwordInput" placeholder="Enter password">
+                </div>
+                <button class="btn btn-primary" onclick="login()">Login / Register</button>
+                <button class="btn btn-secondary" onclick="loginAsAdmin()">Admin Login</button>
+            </div>
+        </div>
+
+        <!-- MAIN MENU SCREEN -->
+        <div class="screen" id="mainMenuScreen">
+            <button class="back-btn" onclick="logout()">Logout</button>
+            <div class="menu-grid">
+                <button class="menu-btn" onclick="showGames()">🎮 150 GAMES</button>
+                <button class="menu-btn" onclick="showRewards()">🎁 REWARDS</button>
+                <button class="menu-btn" onclick="showReferral()">👥 REFERRAL</button>
+                <button class="menu-btn" onclick="showHistory()">📊 HISTORY</button>
+                <button class="menu-btn" onclick="showProfile()">👤 PROFILE</button>
+                <button class="menu-btn" onclick="showSupport()">📞 SUPPORT</button>
+            </div>
+        </div>
+
+        <!-- GAMES LIST SCREEN -->
+        <div class="screen" id="gamesScreen">
+            <button class="back-btn" onclick="showMenu()">← Back</button>
+            <h2>150 Games</h2>
+            <div class="games-grid" id="gamesGrid"></div>
+        </div>
+
+        <!-- GAME PLAY SCREEN -->
+        <div class="screen" id="gamePlayScreen">
+            <button class="back-btn" onclick="showGames()">← Back</button>
+            <div class="game-display">
+                <div class="game-title" id="gameTitle">LuckySpin5Reel</div>
+                <div class="reels-container">
+                    <div class="reel" id="reel1">🚗</div>
+                    <div class="reel" id="reel2">🐶</div>
+                    <div class="reel" id="reel3">😼</div>
+                    <div class="reel" id="reel4">🙈</div>
+                    <div class="reel" id="reel5">🥳</div>
+                </div>
+            </div>
+
+            <div class="free-spins-display" id="freeSpinsDisplay">
+                <strong>Free Spins: <span id="freeSpinsCount">0</span></strong>
+            </div>
+
+            <div class="bet-controls">
+                <button class="bet-btn" onclick="decreaseBet()">−</button>
+                <div class="bet-display">Bet: <span id="betAmount">10</span></div>
+                <button class="bet-btn" onclick="increaseBet()">+</button>
+            </div>
+
+            <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN</button>
+
+            <div class="win-display">
+                <div class="win-label">This Spin Win:</div>
+                <div class="win-amount" id="winAmount">0 🪙</div>
+            </div>
+        </div>
+
+        <!-- PROFILE SCREEN -->
+        <div class="screen" id="profileScreen">
+            <button class="back-btn" onclick="showMenu()">← Back</button>
+            <h2>Player Profile</h2>
+            <div id="profileContent" style="margin-top: 20px;"></div>
+        </div>
+
+        <!-- ADMIN PANEL SCREEN -->
+        <div class="screen" id="adminPanelScreen">
+            <button class="back-btn" onclick="logout()">Logout</button>
+            <h2>Admin Panel</h2>
+            <div class="admin-search">
+                <div class="form-group">
+                    <label>Search Player (ID or Mobile)</label>
+                    <input type="text" id="adminSearchInput" placeholder="Enter player ID or mobile">
+                </div>
+                <button class="btn btn-primary" onclick="searchPlayer()">Search</button>
+            </div>
+
+            <div class="player-result" id="playerResult">
+                <div class="result-item">Player ID: <span class="result-value" id="resultPlayerId">--</span></div>
+                <div class="result-item">Mobile: <span class="result-value" id="resultMobile">--</span></div>
+                <div class="result-item">Current Balance: <span class="result-value" id="resultBalance">0</span></div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Amount</label>
+                    <input type="number" id="adminAmount" placeholder="Enter amount" min="1">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="forceWin()" style="background: #4CAF50;">Force Win</button>
+                    <button class="btn btn-primary" onclick="forceLoss()" style="background: #f44336;">Force Loss</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WIN POPUP -->
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <div class="modal-title">🎉 YOU WON!</div>
+            <div class="modal-amount" id="modalWinAmount">0</div>
+            <button class="modal-btn" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <!-- FREE SPINS POPUP -->
+    <div class="modal" id="freeSpinsModal">
+        <div class="modal-content">
+            <div class="modal-title">⭐ FREE SPINS!</div>
+            <div class="modal-amount">15 Spins!</div>
+            <p>You got 4 Scatter symbols! Enjoy your free spins!</p>
+            <button class="modal-btn" onclick="startFreeSpins()">Start</button>
+        </div>
+    </div>
+
+    <script>
+        // GAME DATA
+        const gameSymbols = {
+            1: ['🚗', '🐶', '😼', '🙈', '🥳', '🃏', '⭐'],
+            2: ['🎡', '🎢', '🎪', '🎭', '🎨', '🎯', '🎁'],
+            3: ['💎', '💰', '🏆', '👑', '🌟', '✨', '🔱'],
+            4: ['🦁', '🐯', '🦒', '🐘', '🦓', '🌴', '🍃'],
+            5: ['🐠', '🐟', '🐙', '🦑', '🌊', '⚓', '🏖️'],
+        };
+
+        const symbolPayouts = {
+            '🚗': 100, '🐶': 80, '😼': 60, '🙈': 40, '🥳': 20,
+            '🎡': 100, '🎢': 80, '🎪': 60, '🎭': 40, '🎨': 20,
+            '💎': 100, '💰': 80, '🏆': 60, '👑': 40, '🌟': 20
+        };
+
+        let playerData = {
+            id: '',
+            phone: '',
+            coins: 5000,
+            totalWins: 0,
+            gameHistory: []
+        };
+
+        let gameState = {
+            currentGame: 1,
+            currentBet: 10,
+            freeSpinsRemaining: 0,
+            freeSpinWins: 0,
+            isSpinning: false
+        };
+
+        // LOCAL STORAGE FUNCTIONS
+        function savePlayer() {
+            localStorage.setItem('playerData', JSON.stringify(playerData));
+        }
+
+        function loadPlayer() {
+            const saved = localStorage.getItem('playerData');
+            if (saved) playerData = JSON.parse(saved);
+        }
+
+        // LOGIN
+        function login() {
+            const phone = document.getElementById('phoneInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (!phone || !password) {
+                alert('Please enter phone and password');
+                return;
+            }
+
+            if (phone.length !== 10) {
+                alert('Phone number must be 10 digits');
+                return;
+            }
+
+            playerData.id = 'PLY_' + phone;
+            playerData.phone = phone;
+            savePlayer();
+
+            showScreen('mainMenuScreen');
+            updateHeader();
+        }
+
+        function loginAsAdmin() {
+            const password = prompt('Enter Admin Password:');
+            if (password === 'admin123') {
+                showScreen('adminPanelScreen');
+            } else {
+                alert('Invalid admin password');
+            }
+        }
+
+        // SCREEN NAVIGATION
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showMenu() {
+            loadPlayer();
+            updateHeader();
+            showScreen('mainMenuScreen');
+        }
+
+        function showGames() {
+            showScreen('gamesScreen');
+            generateGamesList();
+        }
+
+        function showProfile() {
+            showScreen('profileScreen');
+            document.getElementById('profileContent').innerHTML = `
+                <p><strong>Player ID:</strong> ${playerData.id}</p>
+                <p><strong>Mobile:</strong> ${playerData.phone}</p>
+                <p><strong>Coins Balance:</strong> 🪙 ${playerData.coins}</p>
+                <p><strong>Total Wins:</strong> ${playerData.totalWins}</p>
+                <p><strong>Games Played:</strong> ${playerData.gameHistory.length}</p>
+            `;
+        }
+
+        function showReferral() {
+            alert('Referral Code: REF' + playerData.id.substring(4) + '\nShare to earn 50 coins per referral!');
+        }
+
+        function showHistory() {
+            let history = 'Recent Games:\n';
+            playerData.gameHistory.slice(-5).forEach((game, i) => {
+                history += `\n${i+1}. Game ${game.gameId} - Win: 🪙 ${game.win}`;
+            });
+            alert(history || 'No games played yet');
+        }
+
+        function showRewards() {
+            alert('Daily Bonus: 🪙 100\nWeekly Jackpot Active!\nCheck back tomorrow for more rewards!');
+        }
+
+        function showSupport() {
+            alert('Support Contact:\n\n📞 Call: +91-9876543210\n📧 Email: support@luckyspin.com\n\nAvailable 24/7');
+        }
+
+        function logout() {
+            showScreen('loginScreen');
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // GAMES LIST
+        function generateGamesList() {
+            const gamesGrid = document.getElementById('gamesGrid');
+            gamesGrid.innerHTML = '';
+
+            for (let i = 1; i <= 150; i++) {
+                const gameSymbol = gameSymbols[i] ? gameSymbols[i][0] : '🎮';
+                const gameBtn = document.createElement('button');
+                gameBtn.className = 'game-btn';
+                gameBtn.innerHTML = `${gameSymbol}<br>Game ${i}`;
+                gameBtn.onclick = () => playGame(i);
+                gamesGrid.appendChild(gameBtn);
+            }
+        }
+
+        function playGame(gameId) {
+            gameState.currentGame = gameId;
+            gameState.freeSpinsRemaining = 0;
+            gameState.freeSpinWins = 0;
+            document.getElementById('gameTitle').textContent = `Game ${gameId}`;
+            document.getElementById('freeSpinsDisplay').classList.remove('active');
+            showScreen('gamePlayScreen');
+        }
+
+        // BET CONTROLS
+        function increaseBet() {
+            if (gameState.currentBet < 100) {
+                gameState.currentBet += 10;
+                document.getElementById('betAmount').textContent = gameState.currentBet;
+            }
+        }
+
+        function decreaseBet() {
+            if (gameState.currentBet > 1) {
+                gameState.currentBet -= 10;
+                if (gameState.currentBet < 1) gameState.currentBet = 1;
+                document.getElementById('betAmount').textContent = gameState.currentBet;
+            }
+        }
+
+        // SPIN FUNCTION
+        function spin() {
+            if (gameState.isSpinning) return;
+
+            if (playerData.coins < gameState.currentBet) {
+                alert('Not enough coins! Current: ' + playerData.coins);
+                return;
+            }
+
+            gameState.isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+
+            playerData.coins -= gameState.currentBet;
+
+            // Generate random symbols
+            const symbols = gameSymbols[gameState.currentGame] || gameSymbols[1];
+            const reels = ['reel1', 'reel2', 'reel3', 'reel4', 'reel5'];
+            const selectedSymbols = [];
+
+            reels.forEach((reelId, index) => {
+                const reel = document.getElementById(reelId);
+                reel.classList.add('spin');
+
+                setTimeout(() => {
+                    const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                    selectedSymbols[index] = randomSymbol;
+                    reel.textContent = randomSymbol;
+                    reel.classList.remove('spin');
+                }, 500);
+            });
+
+            setTimeout(() => {
+                const winAmount = checkWins(selectedSymbols);
+                playerData.coins += winAmount;
+
+                if (winAmount > 0) {
+                    document.getElementById('winAmount').textContent = winAmount + ' 🪙';
+                    playWinSound(winAmount);
+
+                    if (winAmount >= 500) {
+                        document.getElementById('modalWinAmount').textContent = winAmount + ' 🪙\nMEGA WIN!';
+                    } else if (winAmount >= 200) {
+                        document.getElementById('modalWinAmount').textContent = winAmount + ' 🪙\nMEDIUM WIN!';
+                    } else {
+                        document.getElementById('modalWinAmount').textContent = winAmount + ' 🪙';
+                    }
+
+                    document.getElementById('winModal').classList.add('active');
+                } else {
+                    document.getElementById('winAmount').textContent = '0 🪙';
+                }
+
+                // Check for free spins
+                const scatterCount = selectedSymbols.filter(s => s === '⭐').length;
+                if (scatterCount >= 4) {
+                    document.getElementById('freeSpinsModal').classList.add('active');
+                }
+
+                playerData.gameHistory.push({
+                    gameId: gameState.currentGame,
+                    bet: gameState.currentBet,
+                    win: winAmount,
+                    time: new Date().toLocaleTimeString()
+                });
+
+                savePlayer();
+                updateHeader();
+
+                gameState.isSpinning = false;
+                document.getElementById('spinBtn').disabled = false;
+            }, 600);
+        }
+
+        function checkWins(symbols) {
+            let totalWin = 0;
+
+            // Check horizontal line (all 5 match)
+            if (symbols[0] === symbols[1] && symbols[1] === symbols[2] && symbols[2] === symbols[3] && symbols[3] === symbols[4]) {
+                totalWin += (symbolPayouts[symbols[0]] || 20) * gameState.currentBet;
+            } else if (symbols[0] === symbols[1] && symbols[1] === symbols[2] && symbols[2] === symbols[3]) {
+                totalWin += 200; // 4 match
+            } else if (symbols[0] === symbols[1] && symbols[1] === symbols[2]) {
+                totalWin += 50; // 3 match
+            } else if (symbols[0] === symbols[1]) {
+                totalWin += 10; // 2 match
+            }
+
+            return totalWin;
+        }
+
+        function playWinSound(amount) {
+            // Vibration feedback (if available)
+            if (navigator.vibrate) {
+                if (amount >= 500) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else if (amount >= 200) {
+                    navigator.vibrate([50, 30, 50]);
+                } else {
+                    navigator.vibrate(30);
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('winModal').classList.remove('active');
+        }
+
+        function startFreeSpins() {
+            gameState.freeSpinsRemaining = 15;
+            gameState.freeSpinWins = 0;
+            document.getElementById('freeSpinsModal').classList.remove('active');
+            document.getElementById('freeSpinsDisplay').classList.add('active');
+            updateFreeSpinCounter();
+        }
+
+        function updateFreeSpinCounter() {
+            document.getElementById('freeSpinsCount').textContent = gameState.freeSpinsRemaining;
+        }
+
+        // ADMIN PANEL
+        function searchPlayer() {
+            const search = document.getElementById('adminSearchInput').value;
+            
+            if (!search) {
+                alert('Enter player ID or mobile number');
+                return;
+            }
+
+            // Simulate finding player
+            document.getElementById('resultPlayerId').textContent = search;
+            document.getElementById('resultMobile').textContent = search.substring(0, 10);
+            document.getElementById('resultBalance').textContent = Math.floor(Math.random() * 10000);
+            document.getElementById('playerResult').classList.add('active');
+        }
+
+        function forceWin() {
+            const amount = parseInt(document.getElementById('adminAmount').value);
+            if (!amount || amount < 1) {
+                alert('Enter valid amount');
+                return;
+            }
+
+            const resultBalance = parseInt(document.getElementById('resultBalance').textContent);
+            const newBalance = resultBalance + amount;
+            document.getElementById('resultBalance').textContent = newBalance;
+            alert(`✅ Force Win Applied!\nAmount: ${amount}\nNew Balance: ${newBalance}`);
+            document.getElementById('adminAmount').value = '';
+        }
+
+        function forceLoss() {
+            const amount = parseInt(document.getElementById('adminAmount').value);
+            if (!amount || amount < 1) {
+                alert('Enter valid amount');
+                return;
+            }
+
+            const resultBalance = parseInt(document.getElementById('resultBalance').textContent);
+            const newBalance = Math.max(0, resultBalance - amount);
+            document.getElementById('resultBalance').textContent = newBalance;
+            alert(`✅ Force Loss Applied!\nAmount: ${amount}\nNew Balance: ${newBalance}`);
+            document.getElementById('adminAmount').value = '';
+        }
+
+        // HEADER UPDATE
+        function updateHeader() {
+            document.getElementById('playerId').textContent = playerData.id || '--';
+            document.getElementById('coinBalance').textContent = playerData.coins + ' 🪙';
+        }
+
+        // INIT
+        loadPlayer();
+        updateHeader();
+    </script>
+</body>
+</html>
